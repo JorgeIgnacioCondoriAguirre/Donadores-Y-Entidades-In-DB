@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Table(name = "donador")
 public class Donador {
   @Id
@@ -33,6 +35,8 @@ public class Donador {
   private EstadoDonadorEnum estado;
   @Column(name = "categoria")
   private String categoria;
+  //@OneToMany(mappedBy = "donador", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+  //private List<Queja> quejas;
 
   public Donador(
       String nombre,

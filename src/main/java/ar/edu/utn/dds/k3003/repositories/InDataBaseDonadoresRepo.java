@@ -2,6 +2,7 @@ package ar.edu.utn.dds.k3003.repositories;
 
 import ar.edu.utn.dds.k3003.model.Donador;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.val;
 
 import java.util.Optional;
@@ -10,19 +11,26 @@ import java.util.List;
 public class InDataBaseDonadoresRepo implements DonadoresRepository {
 
   private EntityManager entityManager;
-  public InDataBaseDonadoresRepo(EntityManager entityManager) {
+  private EntityTransaction transaction;
+
+  public InDataBaseDonadoresRepo(EntityManager entityManager, EntityTransaction transaction) {
     this.entityManager = entityManager;
+    this.transaction = transaction;
   }
 
   @Override
   public Optional<Donador> findById(String id) {
-    Donador donador = entityManager.find(Donador.class, id);
+    if (id == null) {
+      return Optional.empty();
+    }
+    val donador = entityManager.find(Donador.class, id);
     return Optional.ofNullable(donador);
   }
 
   @Override
+  @Transactional
   public Donador save(Donador donador) {
-    if (donador.getId() == null || this.findById(donador.getId()).isEmpty()) {
+    if (donador.getId() == null) {
       entityManager.persist(donador);
       return donador;
     } else {

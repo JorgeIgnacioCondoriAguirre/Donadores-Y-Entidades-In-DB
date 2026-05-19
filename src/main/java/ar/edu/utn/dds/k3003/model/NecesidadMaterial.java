@@ -14,7 +14,7 @@ import jakarta.persistence.*;
 @Table(name = "necesidad_material")
 public class NecesidadMaterial {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     @Column(name = "entidad_id")
     private String entidadID;

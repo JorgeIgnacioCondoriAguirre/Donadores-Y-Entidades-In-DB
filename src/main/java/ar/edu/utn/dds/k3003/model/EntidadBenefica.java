@@ -14,7 +14,7 @@ import jakarta.persistence.*;
 @Table(name = "entidad_benefica")
 public class EntidadBenefica {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   // @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     @Column(name = "razon_social")
     private String razonSocial;

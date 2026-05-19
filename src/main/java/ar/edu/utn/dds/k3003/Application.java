@@ -21,9 +21,11 @@ public class Application {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
+    EntityTransaction transaction = entityManager.getTransaction();
+    transaction.begin();
 
     System.out.println("¡Conectado a PostgreSQL exitosamente!");
 
-    return new Fachada(entityManager);
+    return new Fachada(entityManager,transaction);
   }
 }
