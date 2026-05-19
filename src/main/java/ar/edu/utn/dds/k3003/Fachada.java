@@ -28,15 +28,15 @@ public class Fachada implements FachadaDonadoresYEntidades {
     private QuejasRepository quejasRepository;
 
     public Fachada() {
-//        this.donadoresRepository = new InDataBaseDonadoresRepo();
-//        this.entidadesBeneficasRepository = new InDataBaseEntidadesBeneficasRepo();
-//        this.necesidadMaterialRepository = new InDataBaseNecesidadMaterialRepo();
-//        this.quejasRepository = new InDataBaseQuejasRepo();
+        this.donadoresRepository = new InDataBaseDonadoresRepo();
+        this.entidadesBeneficasRepository = new InDataBaseEntidadesBeneficasRepo();
+        this.necesidadMaterialRepository = new InDataBaseNecesidadMaterialRepo();
+        this.quejasRepository = new InDataBaseQuejasRepo();
 
-        this.donadoresRepository = new InMemoryDonadoresRepo();
-        this.entidadesBeneficasRepository = new InMemoryEntidadesBeneficasRepo();
-        this.necesidadMaterialRepository = new InMemoryNecesidadMaterialRepo();
-        this.quejasRepository = new InMemoryQuejasRepo();
+//        this.donadoresRepository = new InMemoryDonadoresRepo();
+//        this.entidadesBeneficasRepository = new InMemoryEntidadesBeneficasRepo();
+//        this.necesidadMaterialRepository = new InMemoryNecesidadMaterialRepo();
+//        this.quejasRepository = new InMemoryQuejasRepo();
     }
 
     public List<EntidadBeneficaDTO> obtenerTodasLasEntidades(){

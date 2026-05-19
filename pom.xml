@@ -50,11 +50,15 @@
 
     <!-- Database -->
     <dependency>
-      <!--<groupId>com.h2database</groupId> -->
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <!-- <artifactId>h2</artifactId> -->
-      <scope>runtime</scope>
+      <version>42.7.3</version>
     </dependency>
 
     <!-- Existing Dependencies -->
