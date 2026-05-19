@@ -13,21 +13,13 @@ public class Application {
     SpringApplication.run(Application.class, args);
     System.out.println("Iniciando conexión con Render...");
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("db");
-    EntityManager em = emf.createEntityManager();
+    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
+    EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     System.out.println("¡Conectado a PostgreSQL exitosamente!");
 
-    // 2. Instanciamos tu Fachada (asegúrate de que tu Fachada tenga un constructor que reciba el EM o los repos de Postgres)
-    Fachada fachada = new Fachada();
+    Fachada fachada = new Fachada(entityManager);
 
-    // Asumiendo que agregaste setters o un constructor en tu Fachada para inyectar los nuevos repositorios:
-//    fachada.setDonadoresRepository(new InDataBaseDonadoresRepo(em));
-//    fachada.setQuejasRepository(new InDataBaseQuejasRepo(em));
-//    fachada.setNecesidadMaterialRepository(new InDataBaseMaterialRepo(em));
-//    fachada.setEntidadesBeneficasRepository(new InDataBaseBeneficasRepo(em));
-
-    // 3. ¡LA PRUEBA DE FUEGO! Insertamos un donador real
     try {
       DonadorDTO donadorPrueba = new DonadorDTO(
               "d-100", "Jorge", "Prueba", 24, "jorge@mail.com",
@@ -40,9 +32,9 @@ public class Application {
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
-      // Siempre cerramos las conexiones al terminar
-      em.close();
-      emf.close();
+
+      entityManager.close();
+      entityManagerFactory.close();
     }
   }
 }

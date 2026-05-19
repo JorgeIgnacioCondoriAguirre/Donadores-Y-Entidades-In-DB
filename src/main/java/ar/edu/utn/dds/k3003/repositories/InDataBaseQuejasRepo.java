@@ -15,8 +15,10 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class InDataBaseQuejasRepo implements QuejasRepository{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
-    EntityManager entityManager = entityManagerFactory .createEntityManager();
+    private EntityManager entityManager;
+    public InDataBaseQuejasRepo(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public Queja save(Queja queja) {
