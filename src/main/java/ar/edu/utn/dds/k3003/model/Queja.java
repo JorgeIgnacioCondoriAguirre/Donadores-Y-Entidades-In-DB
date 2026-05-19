@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Queja")
+@Table(name = "queja")
 public class Queja{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

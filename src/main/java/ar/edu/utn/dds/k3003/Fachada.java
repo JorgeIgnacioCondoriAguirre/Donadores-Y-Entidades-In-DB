@@ -5,15 +5,13 @@ import ar.edu.utn.dds.k3003.catedra.fachadas.FachadaDonadoresYEntidades;
 import ar.edu.utn.dds.k3003.catedra.fachadas.FachadaIncentivos;
 import ar.edu.utn.dds.k3003.exceptions.*;
 import ar.edu.utn.dds.k3003.repositories.*;
+import jakarta.persistence.EntityManager;
 import lombok.val;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@Service
 public class Fachada implements FachadaDonadoresYEntidades {
-
     private FachadaIncentivos fachadaIncentivos;
 
     //MAPPERS
@@ -27,16 +25,17 @@ public class Fachada implements FachadaDonadoresYEntidades {
     private NecesidadMaterialRepository necesidadMaterialRepository;
     private QuejasRepository quejasRepository;
 
-    public Fachada() {
-        this.donadoresRepository = new InDataBaseDonadoresRepo();
-        this.entidadesBeneficasRepository = new InDataBaseEntidadesBeneficasRepo();
-        this.necesidadMaterialRepository = new InDataBaseNecesidadMaterialRepo();
-        this.quejasRepository = new InDataBaseQuejasRepo();
-
-//        this.donadoresRepository = new InMemoryDonadoresRepo();
-//        this.entidadesBeneficasRepository = new InMemoryEntidadesBeneficasRepo();
-//        this.necesidadMaterialRepository = new InMemoryNecesidadMaterialRepo();
-//        this.quejasRepository = new InMemoryQuejasRepo();
+    public Fachada(EntityManager entityManager) {
+        this.donadoresRepository = new InDataBaseDonadoresRepo(entityManager);
+        this.entidadesBeneficasRepository = new InDataBaseEntidadesBeneficasRepo(entityManager);
+        this.necesidadMaterialRepository = new InDataBaseNecesidadMaterialRepo(entityManager);
+        this.quejasRepository = new InDataBaseQuejasRepo(entityManager);
+    }
+    public Fachada(){
+        this.donadoresRepository = new InMemoryDonadoresRepo();
+        this.entidadesBeneficasRepository = new InMemoryEntidadesBeneficasRepo();
+        this.necesidadMaterialRepository = new InMemoryNecesidadMaterialRepo();
+        this.quejasRepository = new InMemoryQuejasRepo();
     }
 
     public List<EntidadBeneficaDTO> obtenerTodasLasEntidades(){

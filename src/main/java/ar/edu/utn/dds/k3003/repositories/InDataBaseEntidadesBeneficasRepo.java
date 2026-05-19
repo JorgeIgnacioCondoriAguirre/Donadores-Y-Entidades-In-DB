@@ -10,8 +10,10 @@ import java.util.Optional;
 
 public class InDataBaseEntidadesBeneficasRepo implements EntidadesBeneficasRepository{
 
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
-    EntityManager entityManager = entityManagerFactory .createEntityManager();
+    private EntityManager entityManager;
+    public InDataBaseEntidadesBeneficasRepo(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public Optional<EntidadBenefica> findById(String id) {

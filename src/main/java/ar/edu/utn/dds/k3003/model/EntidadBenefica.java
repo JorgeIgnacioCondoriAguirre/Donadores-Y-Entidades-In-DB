@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Entidad Benefica")
+@Table(name = "entidad_benefica")
 public class EntidadBenefica {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

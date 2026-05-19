@@ -14,9 +14,10 @@ import java.util.concurrent.atomic.AtomicLong;
 
 
 public class InDataBaseNecesidadMaterialRepo implements NecesidadMaterialRepository{
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
-    EntityManager entityManager = entityManagerFactory .createEntityManager();
-
+    private EntityManager entityManager;
+    public InDataBaseNecesidadMaterialRepo(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
     @Override
     public NecesidadMaterial save(NecesidadMaterial necesidadMaterial) {
         if (necesidadMaterial.getId() == null || this.findById(necesidadMaterial.getId()).isEmpty()) {

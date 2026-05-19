@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Donador")
+@Table(name = "donador")
 public class Donador {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

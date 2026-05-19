@@ -8,8 +8,11 @@ import java.util.Optional;
 import java.util.List;
 
 public class InDataBaseDonadoresRepo implements DonadoresRepository {
-  EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
-  EntityManager entityManager = entityManagerFactory .createEntityManager();
+
+  private EntityManager entityManager;
+  public InDataBaseDonadoresRepo(EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
 
   @Override
   public Optional<Donador> findById(String id) {

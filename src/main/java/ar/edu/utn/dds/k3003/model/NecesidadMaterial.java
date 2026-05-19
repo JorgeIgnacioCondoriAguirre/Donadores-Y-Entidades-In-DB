@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "Necesidad material")
+@Table(name = "necesidad_material")
 public class NecesidadMaterial {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
