@@ -17,6 +17,9 @@ public class InDataBaseEntidadesBeneficasRepo implements EntidadesBeneficasRepos
 
     @Override
     public Optional<EntidadBenefica> findById(String id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         EntidadBenefica entidadBenefica = entityManager.find(EntidadBenefica.class, id);
         return Optional.ofNullable(entidadBenefica);
     }
@@ -24,6 +27,7 @@ public class InDataBaseEntidadesBeneficasRepo implements EntidadesBeneficasRepos
     @Override
     public EntidadBenefica save(EntidadBenefica entidadBenefica) {
         if (entidadBenefica.getId() == null || this.findById(entidadBenefica.getId()).isEmpty()) {
+            entidadBenefica.setId(java.util.UUID.randomUUID().toString());
             entityManager.persist(entidadBenefica);
             return entidadBenefica;
         } else {

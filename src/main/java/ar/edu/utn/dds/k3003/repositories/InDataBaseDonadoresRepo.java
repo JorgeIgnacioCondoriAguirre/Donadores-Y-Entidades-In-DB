@@ -16,6 +16,9 @@ public class InDataBaseDonadoresRepo implements DonadoresRepository {
 
   @Override
   public Optional<Donador> findById(String id) {
+    if (id == null) {
+      return Optional.empty();
+    }
     Donador donador = entityManager.find(Donador.class, id);
     return Optional.ofNullable(donador);
   }
@@ -23,6 +26,7 @@ public class InDataBaseDonadoresRepo implements DonadoresRepository {
   @Override
   public Donador save(Donador donador) {
     if (donador.getId() == null || this.findById(donador.getId()).isEmpty()) {
+      donador.setId(java.util.UUID.randomUUID().toString());
       entityManager.persist(donador);
       return donador;
     } else {

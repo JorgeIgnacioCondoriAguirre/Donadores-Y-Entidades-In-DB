@@ -21,6 +21,7 @@ public class InDataBaseNecesidadMaterialRepo implements NecesidadMaterialReposit
     @Override
     public NecesidadMaterial save(NecesidadMaterial necesidadMaterial) {
         if (necesidadMaterial.getId() == null || this.findById(necesidadMaterial.getId()).isEmpty()) {
+            necesidadMaterial.setId(java.util.UUID.randomUUID().toString());
             entityManager.persist(necesidadMaterial);
             return necesidadMaterial;
         } else {
@@ -41,6 +42,9 @@ public class InDataBaseNecesidadMaterialRepo implements NecesidadMaterialReposit
 
     @Override
     public Optional<NecesidadMaterial> findById(String id){
+        if (id == null) {
+            return Optional.empty();
+        }
         NecesidadMaterial necesidadMaterial = entityManager.find(NecesidadMaterial.class, id);
         return Optional.ofNullable(necesidadMaterial);
     }

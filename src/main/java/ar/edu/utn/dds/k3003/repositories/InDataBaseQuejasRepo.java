@@ -23,6 +23,7 @@ public class InDataBaseQuejasRepo implements QuejasRepository{
     @Override
     public Queja save(Queja queja) {
         if (queja.getId() == null || this.findById(queja.getId()).isEmpty()) {
+            queja.setId(java.util.UUID.randomUUID().toString());
             entityManager.persist(queja);
             return queja;
         } else {
@@ -32,6 +33,9 @@ public class InDataBaseQuejasRepo implements QuejasRepository{
 
     @Override
     public Optional<Queja> findById(String id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         Queja queja = entityManager.find(Queja.class, id);
         return Optional.ofNullable(queja);
     }
