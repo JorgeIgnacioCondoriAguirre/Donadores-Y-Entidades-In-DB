@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "donador")
 public class Donador {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  //@GeneratedValue(strategy = GenerationType.AUTO)
   private String id;
   @Column(name = "nombre")
   private String nombre;

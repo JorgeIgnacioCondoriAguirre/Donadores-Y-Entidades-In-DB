@@ -33,6 +33,7 @@ public class InDataBaseEntidadesBeneficasRepo implements EntidadesBeneficasRepos
     @Transactional
     public EntidadBenefica save(EntidadBenefica entidadBenefica) {
         if (entidadBenefica.getId() == null || this.findById(entidadBenefica.getId()).isEmpty()) {
+            entidadBenefica.setId(java.util.UUID.randomUUID().toString());
             entityManager.persist(entidadBenefica);
             return entidadBenefica;
         } else {
