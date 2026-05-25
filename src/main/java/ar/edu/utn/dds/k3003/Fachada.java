@@ -78,7 +78,6 @@ public class Fachada implements FachadaDonadoresYEntidades {
         if (quejasRepository.findById(quejaDTO.id()).isPresent()) {
             throw new RuntimeException("La queja ya existe");
         }
-
         buscarDonadorPorID(quejaDTO.donadorID());
 
         val queja = quejaDataMapper.toQueja(quejaDTO);
@@ -105,10 +104,9 @@ public class Fachada implements FachadaDonadoresYEntidades {
         if (donador.isEmpty()) {
             throw new NoSuchElementException("No existe un donador con ese ID");
         }
-        val donadorFinal = donador.get();
-        donadorFinal.setEstado(estado);
-
-        return donadoresYEntidadesDataMapper.toDonadorDTO(donadorFinal);
+        donador.get().setEstado(estado);
+        this.donadoresRepository.save(donador.get());
+        return donadoresYEntidadesDataMapper.toDonadorDTO(donador.get());
     }
 
     //MODIFICAR DONADOR
@@ -117,16 +115,13 @@ public class Fachada implements FachadaDonadoresYEntidades {
         if (categoria == null) {
             throw new RuntimeException("La categoria no puede ser nula");
         }
-
-        var donadorOptional = this.donadoresRepository.findById(donadorID);
-        if (donadorOptional.isEmpty()) {
+        val donador = this.donadoresRepository.findById(donadorID);
+        if (donador.isEmpty()) {
             throw new NoSuchElementException("No existe un donador con ese ID");
         }
-
-        val donadorFinal = donadorOptional.get();
-        donadorFinal.setCategoria(categoria);
-
-        return donadoresYEntidadesDataMapper.toDonadorDTO(donadorFinal);
+        donador.get().setCategoria(categoria);
+        this.donadoresRepository.save(donador.get());
+        return donadoresYEntidadesDataMapper.toDonadorDTO(donador.get());
     }
 
     @Override
@@ -195,6 +190,7 @@ public class Fachada implements FachadaDonadoresYEntidades {
         }
         val entidad = entidadesBeneficasRepository.findById(entidadID);
         entidad.get().setRazonSocial(nuevaRazon);
+        this.entidadesBeneficasRepository.save(entidad.get());
         return donadoresYEntidadesDataMapper.toEntidadBeneficaDTO(entidad.get());
     }
 
@@ -271,9 +267,11 @@ public class Fachada implements FachadaDonadoresYEntidades {
         }
         else if(necesidad.get().getTipo().equals(TipoNecesidadMaterialEnum.EXTRAORDINARIA)){
             necesidad.get().setCantidadObjetivo(necesidad.get().getCantidadObjetivo() - cantidad);
-            val borrar = necesidadMaterialRepository.deleteById(necesidadID);
-            return necesidadMaterialDataMapper.toNecesidadMaterialDTO(borrar);
+            this.necesidadMaterialRepository.deleteById(necesidadID);
+            this.necesidadMaterialRepository.save(necesidad.get());
+            return necesidadMaterialDataMapper.toNecesidadMaterialDTO(necesidad.get());
         }
+        this.necesidadMaterialRepository.save(necesidad.get());
         return necesidadMaterialDataMapper.toNecesidadMaterialDTO(necesidad.get());
     }
 
