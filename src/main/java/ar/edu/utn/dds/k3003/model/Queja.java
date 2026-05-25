@@ -15,16 +15,22 @@ import java.time.LocalDate;
 @Table(name = "queja")
 public class Queja{
     @Id
-   // @GeneratedValue(strategy = GenerationType.AUTO)
-        private String id;
+    private String id;
     @Column(name = "donacion_id")
-        private String donacionID;
+    private String donacionID;
     @Column(name = "donador_id")
-        private String donadorID;
+    private String donadorID;
     @Column(name = "fecha")
-        private LocalDate fecha;
+    private LocalDate fecha;
     @Column(name = "descripcion")
-        private String descripcion;
+    private String descripcion;
+
+    @PrePersist
+    public void generarIdAutomatico() {
+        if (this.id == null) {
+            this.id = com.aventrix.jnanoid.jnanoid.NanoIdUtils.randomNanoId();
+        }
+    }
 
     public Queja(String donacionID, String donadorID, LocalDate fecha, String descripcion) {
         this.donacionID = donacionID;

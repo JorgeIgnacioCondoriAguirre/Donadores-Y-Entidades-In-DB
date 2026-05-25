@@ -14,7 +14,6 @@ import jakarta.persistence.*;
 @Table(name = "entidad_benefica")
 public class EntidadBenefica {
     @Id
-   // @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     @Column(name = "razon_social")
     private String razonSocial;
@@ -25,6 +24,12 @@ public class EntidadBenefica {
     @Column(name = "correo")
     private String correo;
 
+    @PrePersist
+    public void generarIdAutomatico() {
+        if (this.id == null) {
+            this.id = com.aventrix.jnanoid.jnanoid.NanoIdUtils.randomNanoId();
+        }
+    }
 
     public EntidadBenefica(String razonSocial,
                            String domicilio,

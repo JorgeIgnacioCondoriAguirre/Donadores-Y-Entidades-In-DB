@@ -14,7 +14,6 @@ import jakarta.persistence.*;
 @Table(name = "necesidad_material")
 public class NecesidadMaterial {
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     @Column(name = "entidad_id")
     private String entidadID;
@@ -29,6 +28,13 @@ public class NecesidadMaterial {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo")
     private TipoNecesidadMaterialEnum tipo;
+
+    @PrePersist
+    public void generarIdAutomatico() {
+        if (this.id == null) {
+            this.id = com.aventrix.jnanoid.jnanoid.NanoIdUtils.randomNanoId();
+        }
+    }
 
     public NecesidadMaterial(String entidadID, Integer nivelDeUrgencia, String descripcion, Integer cantidadObjetivo, String productoSolicitadoID, TipoNecesidadMaterialEnum tipo) {
         this.entidadID = entidadID;
