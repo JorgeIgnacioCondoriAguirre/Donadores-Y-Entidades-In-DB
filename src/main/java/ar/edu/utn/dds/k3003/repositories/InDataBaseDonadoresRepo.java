@@ -55,8 +55,15 @@ public class InDataBaseDonadoresRepo implements DonadoresRepository {
     val donadorOptional = this.findById(id);
     if (donadorOptional.isPresent()) {
       Donador donador = donadorOptional.get();
-      entityManager.remove(donador);
-      return donador;
+      try {
+        transaction.begin();
+        entityManager.remove(donador);
+        transaction.commit();
+        return donador;
+      } catch (RuntimeException e) {
+        if (transaction.isActive()) transaction.rollback();
+        throw e;
+      }
     }
     return null;
   }

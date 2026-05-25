@@ -7,6 +7,7 @@ import ar.edu.utn.dds.k3003.exceptions.*;
 import ar.edu.utn.dds.k3003.repositories.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.transaction.Transactional;
 import lombok.val;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -58,17 +59,16 @@ public class Fachada implements FachadaDonadoresYEntidades {
     }
 
     //BAJA DONADOR
+    @Transactional
     public DonadorDTO quitarDonador(String donadorID){
-        val donador = donadoresRepository.findById(donadorID);
         if (donadorID == null) {
-            throw new RuntimeException("El donadorID no puede ser nula");
+            throw new RuntimeException("El donadorID no puede ser nulo");
         }
-        if(donador.isEmpty()){
+        if (donadoresRepository.findById(donadorID).isEmpty()) {
             throw new DonadorNoEncontradoException("No existe un donador con ese ID");
         }
-        this.donadoresRepository.deleteById(donadorID);
-        this.donadoresRepository.save(donador.get());
-        return donadoresYEntidadesDataMapper.toDonadorDTO(donador.get());
+        val donadorBorrado = this.donadoresRepository.deleteById(donadorID);
+        return donadoresYEntidadesDataMapper.toDonadorDTO(donadorBorrado);
     }
 
     //MODIFICAR DONADOR
