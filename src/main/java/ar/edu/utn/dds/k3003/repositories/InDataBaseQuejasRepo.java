@@ -1,19 +1,10 @@
 package ar.edu.utn.dds.k3003.repositories;
 
-
-import ar.edu.utn.dds.k3003.model.Donador;
-import ar.edu.utn.dds.k3003.model.NecesidadMaterial;
 import ar.edu.utn.dds.k3003.model.Queja;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class InDataBaseQuejasRepo implements QuejasRepository{
 
@@ -27,14 +18,24 @@ public class InDataBaseQuejasRepo implements QuejasRepository{
 
     @Override
     public Queja save(Queja queja) {
-        if (queja.getId() == null || this.findById(queja.getId()).isEmpty()) {
-            queja.setId(java.util.UUID.randomUUID().toString());
-            entityManager.persist(queja);
-            return queja;
-        } else {
-            return entityManager.merge(queja);
+        try {
+            transaction.begin();
+            Queja quejaGuardada;
+            if (queja.getId() == null) {
+                entityManager.persist(queja);
+                quejaGuardada = queja;
+            } else {
+                quejaGuardada = entityManager.merge(queja);
+            }
+            transaction.commit();
+            return quejaGuardada;
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
         }
-}
+    }
 
     @Override
     public Optional<Queja> findById(String id) {

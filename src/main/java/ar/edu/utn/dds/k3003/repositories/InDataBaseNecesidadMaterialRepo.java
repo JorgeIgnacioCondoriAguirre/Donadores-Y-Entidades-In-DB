@@ -1,18 +1,11 @@
 package ar.edu.utn.dds.k3003.repositories;
 
-import ar.edu.utn.dds.k3003.model.Donador;
 import ar.edu.utn.dds.k3003.model.NecesidadMaterial;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
 import lombok.val;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
-
 
 public class InDataBaseNecesidadMaterialRepo implements NecesidadMaterialRepository{
 
@@ -25,12 +18,22 @@ public class InDataBaseNecesidadMaterialRepo implements NecesidadMaterialReposit
     }
     @Override
     public NecesidadMaterial save(NecesidadMaterial necesidadMaterial) {
-        if (necesidadMaterial.getId() == null || this.findById(necesidadMaterial.getId()).isEmpty()) {
-            necesidadMaterial.setId(java.util.UUID.randomUUID().toString());
-            entityManager.persist(necesidadMaterial);
-            return necesidadMaterial;
-        } else {
-            return entityManager.merge(necesidadMaterial);
+        try {
+            transaction.begin();
+            NecesidadMaterial necesidadMaterialGuardada;
+            if (necesidadMaterial.getId() == null) {
+                entityManager.persist(necesidadMaterial);
+                necesidadMaterialGuardada = necesidadMaterial;
+            } else {
+                necesidadMaterialGuardada = entityManager.merge(necesidadMaterial);
+            }
+            transaction.commit();
+            return necesidadMaterialGuardada;
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
         }
     }
 

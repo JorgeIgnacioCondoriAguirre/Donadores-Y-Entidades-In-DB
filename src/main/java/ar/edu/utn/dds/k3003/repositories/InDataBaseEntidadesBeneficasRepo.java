@@ -2,10 +2,7 @@ package ar.edu.utn.dds.k3003.repositories;
 
 import ar.edu.utn.dds.k3003.model.EntidadBenefica;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
-import jakarta.transaction.Transactional;
 import lombok.val;
 import java.util.List;
 import java.util.Optional;
@@ -30,14 +27,23 @@ public class InDataBaseEntidadesBeneficasRepo implements EntidadesBeneficasRepos
     }
 
     @Override
-    @Transactional
     public EntidadBenefica save(EntidadBenefica entidadBenefica) {
-        if (entidadBenefica.getId() == null || this.findById(entidadBenefica.getId()).isEmpty()) {
-            entidadBenefica.setId(java.util.UUID.randomUUID().toString());
-            entityManager.persist(entidadBenefica);
-            return entidadBenefica;
-        } else {
-            return entityManager.merge(entidadBenefica);
+        try {
+            transaction.begin();
+            EntidadBenefica entidadBeneficaGuardada;
+            if (entidadBenefica.getId() == null) {
+                entityManager.persist(entidadBenefica);
+                entidadBeneficaGuardada = entidadBenefica;
+            } else {
+                entidadBeneficaGuardada = entityManager.merge(entidadBenefica);
+            }
+            transaction.commit();
+            return entidadBeneficaGuardada;
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
         }
     }
 
