@@ -59,14 +59,16 @@ public class Fachada implements FachadaDonadoresYEntidades {
 
     //BAJA DONADOR
     public DonadorDTO quitarDonador(String donadorID){
+        val donador = donadoresRepository.findById(donadorID);
         if (donadorID == null) {
             throw new RuntimeException("El donadorID no puede ser nula");
         }
-        if(this.donadoresRepository.findById(donadorID).isEmpty()){
+        if(donador.isEmpty()){
             throw new DonadorNoEncontradoException("No existe un donador con ese ID");
         }
-        val donadorBajado = this.donadoresRepository.deleteById(donadorID);
-        return donadoresYEntidadesDataMapper.toDonadorDTO(donadorBajado);
+        this.donadoresRepository.deleteById(donadorID);
+        this.donadoresRepository.save(donador.get());
+        return donadoresYEntidadesDataMapper.toDonadorDTO(donador.get());
     }
 
     //MODIFICAR DONADOR

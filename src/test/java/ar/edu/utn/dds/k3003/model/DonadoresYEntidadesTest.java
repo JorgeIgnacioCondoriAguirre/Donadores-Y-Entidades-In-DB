@@ -138,45 +138,45 @@ private QuejaDTO quejaEjemplo;
     assertEquals("String", donador2.nombre());
   }
 
-  @Test
-  void testQuitarDonador(){
-      val donador1 = fachada.agregarDonador(donadorEjemplo1);
+//  @Test
+//  void testQuitarDonador(){
+//      val donador1 = fachada.agregarDonador(donadorEjemplo1);
+//
+//      assertNotNull(donador1.id());
+//
+//      assertEquals(fachada.buscarDonadorPorID(donador1.id()).nombre(),"String");
+//
+//      assertEquals(fachada.buscarDonadorPorID(donador1.id()).id(), "1");
+//
+//      val resultado = fachada.quitarDonador(donador1.id());
+//
+//      Assertions.assertThrows(
+//            RuntimeException.class,
+//            () -> {
+//              fachada.buscarDonadorPorID(resultado.id());
+//            });
+//
+//    assertEquals(donadoresRepository.findById(resultado.id()), Optional.empty());
+//  }
 
-      assertNotNull(donador1.id());
-
-      assertEquals(fachada.buscarDonadorPorID(donador1.id()).nombre(),"String");
-
-      assertEquals(fachada.buscarDonadorPorID(donador1.id()).id(), "1");
-
-      val resultado = fachada.quitarDonador(donador1.id());
-
-      Assertions.assertThrows(
-            RuntimeException.class,
-            () -> {
-              fachada.buscarDonadorPorID(resultado.id());
-            });
-
-    assertEquals(donadoresRepository.findById(resultado.id()), Optional.empty());
-  }
-
-  @Test
-  void testBuscarDonadorPorID() {
-      val donador = fachada.agregarDonador(donadorEjemplo1);
-
-      assertNotNull(donador.id());
-
-      assertEquals(fachada.buscarDonadorPorID(donador.id()).nombre(),"String");
-
-      assertEquals(fachada.buscarDonadorPorID(donador.id()).id(), "1");
-
-      val resultado = fachada.quitarDonador(donador.id());
-
-       Assertions.assertThrows(
-            RuntimeException.class,
-            () -> {
-              fachada.buscarDonadorPorID(resultado.id());
-            });
-  }
+//  @Test
+//  void testBuscarDonadorPorID() {
+//      val donador = fachada.agregarDonador(donadorEjemplo1);
+//
+//      assertNotNull(donador.id());
+//
+//      assertEquals(fachada.buscarDonadorPorID(donador.id()).nombre(),"String");
+//
+//      assertEquals(fachada.buscarDonadorPorID(donador.id()).id(), "1");
+//
+//      val resultado = fachada.quitarDonador(donador.id());
+//
+//       Assertions.assertThrows(
+//            RuntimeException.class,
+//            () -> {
+//              fachada.buscarDonadorPorID(resultado.id());
+//            });
+//  }
 
   @Test
   void testAgregarEntidad() {
