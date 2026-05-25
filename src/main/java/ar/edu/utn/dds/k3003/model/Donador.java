@@ -37,7 +37,12 @@ public class Donador {
   private String categoria;
   //@OneToMany(mappedBy = "donador", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
   //private List<Queja> quejas;
-
+  @PrePersist
+  public void generarIdAutomatico() {
+    if (this.id == null) {
+      this.id = com.aventrix.jnanoid.jnanoid.NanoIdUtils.randomNanoId();
+    }
+  }
   public Donador(
       String nombre,
       String apellido,
