@@ -49,11 +49,18 @@ public class InDataBaseEntidadesBeneficasRepo implements EntidadesBeneficasRepos
 
     @Override
     public EntidadBenefica deleteById(String id) {
-        val entidadOptional = this.findById(id);
-        if (entidadOptional.isPresent()) {
-            EntidadBenefica entidadBenefica = entidadOptional.get();
-            entityManager.remove(entidadBenefica);
-            return entidadBenefica;
+        val entidadBeneficaOptional = this.findById(id);
+        if (entidadBeneficaOptional.isPresent()) {
+            EntidadBenefica entidadBenefica = entidadBeneficaOptional.get();
+            try {
+                transaction.begin();
+                entityManager.remove(entidadBenefica);
+                transaction.commit();
+                return entidadBenefica;
+            } catch (RuntimeException e) {
+                if (transaction.isActive()) transaction.rollback();
+                throw e;
+            }
         }
         return null;
     }

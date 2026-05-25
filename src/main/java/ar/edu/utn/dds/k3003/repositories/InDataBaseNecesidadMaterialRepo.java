@@ -42,11 +42,18 @@ public class InDataBaseNecesidadMaterialRepo implements NecesidadMaterialReposit
         val necesidadOptional = this.findById(id);
         if (necesidadOptional.isPresent()) {
             NecesidadMaterial necesidadMaterial = necesidadOptional.get();
-            entityManager.remove(necesidadOptional);
-            return necesidadMaterial;
+            try {
+                transaction.begin();
+                entityManager.remove(necesidadMaterial);
+                transaction.commit();
+                return necesidadMaterial;
+            } catch (RuntimeException e) {
+                if (transaction.isActive()) transaction.rollback();
+                throw e;
+            }
         }
         return null;
-        }
+    }
 
     @Override
     public Optional<NecesidadMaterial> findById(String id){
