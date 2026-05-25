@@ -30,13 +30,23 @@ public class InDataBaseDonadoresRepo implements DonadoresRepository {
   }
 
   @Override
-  @Transactional
   public Donador save(Donador donador) {
-    if (donador.getId() == null) {
-      entityManager.persist(donador);
-      return donador;
-    } else {
-      return entityManager.merge(donador);
+    try {
+      transaction.begin();
+      Donador donadorGuardado;
+      if (donador.getId() == null) {
+        entityManager.persist(donador);
+        donadorGuardado = donador;
+      } else {
+        donadorGuardado = entityManager.merge(donador);
+      }
+      transaction.commit();
+      return donadorGuardado;
+    } catch (RuntimeException e) {
+      if (transaction.isActive()) {
+        transaction.rollback();
+      }
+      throw e;
     }
   }
 
@@ -56,6 +66,5 @@ public class InDataBaseDonadoresRepo implements DonadoresRepository {
     return entityManager.createQuery("SELECT d FROM Donador d", Donador.class).getResultList();
   }
 }
-
 
 
