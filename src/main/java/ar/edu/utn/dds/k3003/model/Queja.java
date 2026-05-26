@@ -25,9 +25,9 @@ public class Queja{
     private LocalDate fecha;
     @Column(name = "descripcion")
     private String descripcion;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "donador_id")
+    @JoinColumn(name = "donador_id", insertable = false, updatable = false)
     private Donador donador;
 
     @PrePersist

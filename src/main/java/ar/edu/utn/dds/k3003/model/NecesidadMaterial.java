@@ -30,9 +30,9 @@ public class NecesidadMaterial {
     @Column(name = "tipo")
     private TipoNecesidadMaterialEnum tipo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "entidad_benefica_id")
+    @JoinColumn(name = "entidad_id", insertable = false, updatable = false)
     private EntidadBenefica entidadBenefica;
 
     @PrePersist
