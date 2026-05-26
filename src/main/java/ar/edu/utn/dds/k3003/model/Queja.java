@@ -1,5 +1,6 @@
 package ar.edu.utn.dds.k3003.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Queja{
     @Column(name = "descripcion")
     private String descripcion;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "donador_id")
     private Donador donador;
 

@@ -1,6 +1,7 @@
 package ar.edu.utn.dds.k3003.model;
 
 import ar.edu.utn.dds.k3003.catedra.dtos.donadoresYEntidades.TipoNecesidadMaterialEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class NecesidadMaterial {
     private TipoNecesidadMaterialEnum tipo;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "entidad_benefica_id")
     private EntidadBenefica entidadBenefica;
 
