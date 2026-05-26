@@ -29,6 +29,10 @@ public class NecesidadMaterial {
     @Column(name = "tipo")
     private TipoNecesidadMaterialEnum tipo;
 
+    @ManyToOne
+    @JoinColumn(name = "entidad_benefica_id")
+    private EntidadBenefica entidadBenefica;
+
     @PrePersist
     public void generarIdAutomatico() {
         if (this.id == null) {

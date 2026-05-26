@@ -24,6 +24,9 @@ public class Queja{
     private LocalDate fecha;
     @Column(name = "descripcion")
     private String descripcion;
+    @ManyToOne
+    @JoinColumn(name = "donador_id")
+    private Donador donador;
 
     @PrePersist
     public void generarIdAutomatico() {

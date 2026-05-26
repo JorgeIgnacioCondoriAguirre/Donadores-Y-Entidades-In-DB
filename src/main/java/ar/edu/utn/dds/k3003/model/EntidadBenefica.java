@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -23,6 +26,9 @@ public class EntidadBenefica {
     private String telefono;
     @Column(name = "correo")
     private String correo;
+
+    @OneToMany(mappedBy = "entidadBenefica", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<NecesidadMaterial> necesidades = new ArrayList<>();
 
     @PrePersist
     public void generarIdAutomatico() {

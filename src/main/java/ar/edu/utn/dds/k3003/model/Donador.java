@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -34,8 +35,9 @@ public class Donador {
   private EstadoDonadorEnum estado;
   @Column(name = "categoria")
   private String categoria;
-  //@OneToMany(mappedBy = "donador", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-  //private List<Queja> quejas;
+  @OneToMany(mappedBy = "donador", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  private List<Queja> quejas = new ArrayList<>();
+
   @PrePersist
   public void generarIdAutomatico() {
     if (this.id == null) {
