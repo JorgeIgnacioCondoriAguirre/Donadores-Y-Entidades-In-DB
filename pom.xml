@@ -64,6 +64,12 @@
       <version>42.7.3</version>
     </dependency>
 
+    <!-- DataDog -->
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-datadog</artifactId>
+    </dependency>
+
     <!-- Existing Dependencies -->
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>

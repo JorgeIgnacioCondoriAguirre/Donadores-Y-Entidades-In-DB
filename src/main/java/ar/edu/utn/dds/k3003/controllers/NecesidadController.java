@@ -2,6 +2,7 @@ package ar.edu.utn.dds.k3003.controllers;
 
 import ar.edu.utn.dds.k3003.Fachada;
 import ar.edu.utn.dds.k3003.catedra.dtos.donadoresYEntidades.NecesidadMaterialDTO;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,16 @@ import java.util.Map;
 public class NecesidadController {
 
     private Fachada fachada;
+    private MeterRegistry meterRegistry;
 
-    public NecesidadController(Fachada fachada) {
+    public NecesidadController(Fachada fachada, MeterRegistry meterRegistry) {
         this.fachada = fachada;
+        this.meterRegistry = meterRegistry;
     }
 
     @PostMapping
     public ResponseEntity<NecesidadMaterialDTO> postMaterial(@RequestBody NecesidadMaterialDTO necesidadMaterialDTO) {
+        meterRegistry.counter("api.necesidad.registrada", "origen", "http").increment();
         return ResponseEntity.status(HttpStatus.CREATED).body(this.fachada.registrarNecesidad(necesidadMaterialDTO));
     }
 

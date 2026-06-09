@@ -5,6 +5,7 @@ import ar.edu.utn.dds.k3003.catedra.dtos.donadoresYEntidades.DonadorDTO;
 import ar.edu.utn.dds.k3003.catedra.dtos.donadoresYEntidades.DonadorStatsDTO;
 import ar.edu.utn.dds.k3003.catedra.dtos.donadoresYEntidades.EstadoDonadorEnum;
 import ar.edu.utn.dds.k3003.catedra.dtos.donadoresYEntidades.QuejaDTO;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +19,22 @@ import java.util.Map;
 public class DonadorController {
 
   private Fachada fachada;
+  private MeterRegistry meterRegistry;
 
-  public DonadorController(Fachada fachada) {
+  public DonadorController(Fachada fachada, MeterRegistry meterRegistry) {
     this.fachada = fachada;
+    this.meterRegistry = meterRegistry;
   }
 
   @PostMapping
   public ResponseEntity<DonadorDTO> postDonador(@RequestBody DonadorDTO donadorDTO) {
+    meterRegistry.counter("api.donadores.creados", "origen", "http").increment();
     return ResponseEntity.status(HttpStatus.CREATED).body(this.fachada.agregarDonador(donadorDTO));
   }
 
   @GetMapping("/{donadorID}")
   public ResponseEntity<DonadorDTO> getDonadorByID(@PathVariable String donadorID) {
-      return ResponseEntity.ok(this.fachada.buscarDonadorPorID(donadorID));
+    return ResponseEntity.ok(this.fachada.buscarDonadorPorID(donadorID));
   }
 
   @GetMapping
@@ -66,6 +70,7 @@ public class DonadorController {
 
   @PostMapping("/{donadorID}/quejas")
   public ResponseEntity<QuejaDTO> agregarQueja(@RequestBody QuejaDTO quejaDTO) {
+    meterRegistry.counter("api.donadores.quejas.registrada", "origen", "http").increment();
     return ResponseEntity.status(HttpStatus.CREATED).body(this.fachada.agregarQueja(quejaDTO));
   }
 
